@@ -129,8 +129,8 @@ async function generateContentWithFallback(
   throw lastError || new Error("Semua percobaan pembuatan draf gagal setelah dicoba beberapa kali.");
 }
 
-// Resilient fallback document generator in case of high-demand quota exhaustion
-function generateLocalFallbackDocument(params: any): string {
+// Resilient fallback document generator in case of high-demand quota exhaustion or API key issue
+function generateLocalFallbackDocument(params: any, apiErrorMessage?: string): string {
   const {
     namaGuru = "Laeli Fajriyah, S.Pd",
     namaInstitusi = "SD Negeri Korowelang",
@@ -153,7 +153,19 @@ function generateLocalFallbackDocument(params: any): string {
   const currentYear = new Date().getFullYear();
   const dimensiString = (dimensiLulusan && dimensiLulusan.length > 0) ? dimensiLulusan.join(", ") : "Mandiri, Bernalar Kritis, Kreatif";
 
-  let warningHeader = `> **⚠️ INFORMASI KONEKSI**: Server sedang dalam kondisi sibuk/limit kuota API penuh. Dokumen ini berhasil di-generate secara instan menggunakan **Mesin Dokumentasi Kurikulum Lokal Terpadu** dengan format presisi 100% sesuai standar kurikulum, tabel penilaian rubrik lengkap, dan tabel refleksi guru siap cetak.\n\n`;
+  let warningHeader = "";
+  if (apiErrorMessage) {
+    const lowerMessage = apiErrorMessage.toLowerCase();
+    if (lowerMessage.includes("expired") || lowerMessage.includes("expire") || lowerMessage.includes("key expired")) {
+      warningHeader = `> **⚠️ PERHATIAN: API Key Gemini Anda Telah Kedaluwarsa (Expired)**\n>\n> Sistem mendeteksi bahwa **API Key Gemini** Anda saat ini telah kedaluwarsa. Silakan perbarui API Key Anda melalui menu **Settings > Secrets** di AI Studio untuk mengaktifkan kembali modul draf berbasis AI secara penuh.\n>\n> **💡 GENERATOR LOKAL AKTIF**: Agar draf administrasi mengajar Anda tetap dapat diakses saat ini, dokumen di bawah ini berhasil dibuat secara instan oleh **Mesin Dokumentasi Kurikulum Lokal Terpadu** dengan format presisi 100% sesuai standar kurikulum, tabel penilaian rubrik lengkap, dan tabel refleksi guru siap cetak.\n\n`;
+    } else if (lowerMessage.includes("missing") || lowerMessage.includes("tidak ditemukan") || lowerMessage.includes("variable is missing")) {
+      warningHeader = `> **⚠️ PERHATIAN: API Key Gemini Tidak Ditemukan**\n>\n> Sistem mendeteksi bahwa berkas kredensial **GEMINI_API_KEY** belum dikonfigurasi. Silakan tambahkan API Key Anda melalui menu **Settings > Secrets** di AI Studio untuk mengaktifkan kembali modul draf berbasis AI secara penuh.\n>\n> **💡 GENERATOR LOKAL AKTIF**: Agar draf administrasi mengajar Anda tetap dapat diakses saat ini, dokumen di bawah ini berhasil dibuat secara instan oleh **Mesin Dokumentasi Kurikulum Lokal Terpadu** dengan format presisi 100% sesuai standar kurikulum, tabel penilaian rubrik lengkap, dan tabel refleksi guru siap cetak.\n\n`;
+    } else {
+      warningHeader = `> **⚠️ PERHATIAN: Kendala Integrasi API Gemini (${apiErrorMessage})**\n>\n> Terjadi kendala saat menghubungi kecerdasan buatan Gemini. Silakan periksa limit kuota, status akun, atau API Key Anda melalui menu **Settings > Secrets** di AI Studio.\n>\n> **💡 GENERATOR LOKAL AKTIF**: Agar draf administrasi mengajar Anda tetap dapat diakses saat ini, dokumen di bawah ini berhasil dibuat secara instan oleh **Mesin Dokumentasi Kurikulum Lokal Terpadu** dengan format presisi 100% sesuai standar kurikulum, tabel penilaian rubrik lengkap, dan tabel refleksi guru siap cetak.\n\n`;
+    }
+  } else {
+    warningHeader = `> **⚠️ INFORMASI KONEKSI**: Server sedang dalam kondisi sibuk/limit kuota API penuh. Dokumen ini berhasil di-generate secara instan menggunakan **Mesin Dokumentasi Kurikulum Lokal Terpadu** dengan format presisi 100% sesuai standar kurikulum, tabel penilaian rubrik lengkap, dan tabel refleksi guru siap cetak.\n\n`;
+  }
 
   if (tipeDokumen === "lkpd") {
     return warningHeader + `# LEMBAR KERJA PESERTA DIDIK (LKPD) Lampiran 1.1
@@ -756,8 +768,14 @@ Pastikan seluruh bagian di atas diisi secara padat, bernilai, edukatif, dan tida
   } catch (error: any) {
     console.error("Gemini API Error, falling back to secure local model generator:", error);
     try {
-      const fallbackText = generateLocalFallbackDocument(req.body);
-      res.json({ success: true, text: fallbackText });
+      const errMsg = error?.message || error?.toString() || "Unknown API error";
+      const fallbackText = generateLocalFallbackDocument(req.body, errMsg);
+      res.json({ 
+        success: true, 
+        text: fallbackText, 
+        isFallback: true, 
+        apiErrorMessage: errMsg 
+      });
     } catch (fallbackError: any) {
       res.status(500).json({
         success: false,

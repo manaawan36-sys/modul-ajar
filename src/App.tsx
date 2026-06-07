@@ -24,7 +24,9 @@ import {
   PlusCircle,
   FileCode,
   Printer,
-  CheckSquare
+  CheckSquare,
+  Key,
+  AlertCircle
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Dimensions, GeneratorParams, GeneratedHistoryItem, DocumentType } from "./types";
@@ -166,6 +168,8 @@ export default function App() {
   const [viewMode, setViewMode] = useState<"formatted" | "raw">("formatted");
   const [copied, setCopied] = useState<boolean>(false);
   const [errorText, setErrorText] = useState<string>("");
+  const [isFallback, setIsFallback] = useState<boolean>(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState<string>("");
   const [historyList, setHistoryList] = useState<GeneratedHistoryItem[]>([]);
   const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
 
@@ -270,6 +274,8 @@ export default function App() {
     setErrorText("");
     setOutputText("");
     setSelectedHistoryId(null);
+    setIsFallback(false);
+    setApiErrorMessage("");
 
     try {
       const response = await fetch("/api/generate-modul", {
@@ -281,6 +287,10 @@ export default function App() {
 
       if (data.success) {
         setOutputText(data.text);
+        if (data.isFallback) {
+          setIsFallback(true);
+          setApiErrorMessage(data.apiErrorMessage || "");
+        }
         
         // Add to history
         const newItem: GeneratedHistoryItem = {
@@ -315,6 +325,8 @@ export default function App() {
     setOutputText(item.outputText);
     setSelectedHistoryId(item.id);
     setErrorText("");
+    setIsFallback(false);
+    setApiErrorMessage("");
   };
 
   // Delete a history item
@@ -973,6 +985,25 @@ export default function App() {
                       </button>
                     </div>
 
+                    {/* Fallback Warning Alert Banner */}
+                    {isFallback && (
+                      <div className="mb-5 p-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs sm:text-sm flex flex-col gap-3 shadow-xs text-left" id="fallback-engine-notice">
+                        <div className="font-bold flex items-center gap-2 text-amber-800">
+                          <AlertCircle className="w-5 h-5 text-amber-600 animate-pulse shrink-0" />
+                          <span>Kunci API Gemini Kedaluwarsa / Belum Terpasang (Beralih Ke Mode Pendukung Lokalan)</span>
+                        </div>
+                        <div className="text-slate-700 space-y-2 leading-relaxed text-xs sm:text-[13px]">
+                          <p>
+                            Sistem mendeteksi bahwa format kredensial kunci <strong>Gemini API Key Anda saat ini tidak valid, kedaluwarsa, atau telah habis masa aktifnya</strong>. Anda dapat memperbarui/memasukkan kunci API yang baru kapan saja melalui menu <strong>Settings (ikon roda gigi kanan atas) &gt; Secrets</strong> di AI Studio untuk memulihkan generasi draf berbasis AI secara penuh.
+                          </p>
+                          <div className="font-medium text-[#2d3a1a] bg-[#f5fbf0] border border-[#d6e9c6] p-3 rounded-lg flex items-start gap-2">
+                            <span className="shrink-0 text-[14px]">💡</span>
+                            <span><strong>Generator Mandiri Aktif:</strong> Sebagai bentuk proteksi sistem agar administrasi Anda tidak terhambat, draf dokumen di bawah ini berhasil dibuat secara instan oleh <strong>Sistem Generator Kurikulum Terbuka Mandiri</strong> dengan presisi tinggi dan struktur tabel kurikulum yang 100% bersih, lengkap, serta siap digunakan!</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* View Modes */}
                     {viewMode === "formatted" ? (
                       <div 
@@ -1072,9 +1103,34 @@ export default function App() {
                             td: ({ ...props }) => (
                               <td className="px-3 py-1.5 border border-slate-200 text-slate-650" {...props} />
                             ),
-                            blockquote: ({ ...props }) => (
-                              <blockquote className="border-l-4 border-emerald-500 pl-3 bg-slate-50 py-1.5 px-3 italic text-slate-650 text-xs my-3 rounded-r-lg" {...props} />
-                            )
+                            blockquote: ({ children, ...props }) => {
+                              const textContent = React.Children.toArray(children)
+                                .map((child) => (typeof child === "string" || typeof child === "number" ? child : ""))
+                                .join("")
+                                .toLowerCase();
+                              
+                              const isWarning = textContent.includes("perhatian") || 
+                                                textContent.includes("kedaluwarsa") || 
+                                                textContent.includes("expired") || 
+                                                textContent.includes("warning") || 
+                                                textContent.includes("api key") || 
+                                                textContent.includes("koneksi") ||
+                                                textContent.includes("sibuk");
+
+                              if (isWarning) {
+                                return (
+                                  <blockquote className="border-l-4 border-amber-500 pl-4 bg-amber-50/60 p-4 text-slate-700 text-[12px] my-5 rounded-r-xl shadow-xs leading-relaxed" {...props}>
+                                    {children}
+                                  </blockquote>
+                                );
+                              }
+
+                              return (
+                                <blockquote className="border-l-4 border-[#556b2f] pl-3 bg-slate-50 py-1.5 px-3 italic text-slate-650 text-xs my-3 rounded-r-lg" {...props}>
+                                  {children}
+                                </blockquote>
+                              );
+                            }
                           }}
                         >
                           {outputText}
