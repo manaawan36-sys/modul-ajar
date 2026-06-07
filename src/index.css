@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Authentic Document Dossier styles matching the Kurikulum Merdeka reference PDF */
+#formatted-markdown-renderer {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: #1e293b;
+  padding: 0.5rem;
+}
+
+/* Cover page headers (large titles containing MODUL AJAR) */
+#formatted-markdown-renderer h1 {
+  background-color: #c9dcb3;
+  color: #2c3d1a;
+  border: 1.5px solid #a2b292;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Subsections such as identity and core modules (e.g., A. IDENTITAS MODUL) */
+#formatted-markdown-renderer h2 {
+  background-color: #556b2f;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 1rem;
+  border-radius: 0.375rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.8rem;
+  border-left: 5px solid #3d4f22;
+  box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Category or sub-question header */
+#formatted-markdown-renderer h3 {
+  color: #3d4f22;
+  font-weight: 720;
+  margin-top: 1.35rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.75rem;
+  border-bottom: 1px dashed #bacc9a;
+  padding-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+/* Bullet list styling to resemble the customized star/diamond bullet structure in the PDF */
+#formatted-markdown-renderer ul {
+  list-style-type: none;
+  padding-left: 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+#formatted-markdown-renderer ul > li {
+  position: relative;
+  font-size: 0.785rem;
+  color: #334155;
+  margin-bottom: 0.35rem;
+  line-height: 1.55;
+}
+
+#formatted-markdown-renderer ul > li::before {
+  content: "❖";
+  color: #556b2f;
+  font-weight: bold;
+  position: absolute;
+  left: -1.25rem;
+  top: 0.125rem;
+  font-size: 9.5px;
+}
+
+/* Standard ordered items representing step/numbered instructions */
+#formatted-markdown-renderer ol {
+  list-style-type: decimal;
+  padding-left: 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+#formatted-markdown-renderer ol > li {
+  font-size: 0.785rem;
+  color: #334155;
+  margin-bottom: 0.35rem;
+  line-height: 1.55;
+  padding-left: 0.15rem;
+}
+
+/* Neat print-ready typography */
+#formatted-markdown-renderer p {
+  font-size: 0.8125rem; /* 13px spacing as standard */
+  color: #334155;
+  margin-bottom: 0.75rem;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* Robust table designs matching PDF Penilaian & Rubrics */
+#formatted-markdown-renderer table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1.5px solid #bacc9a;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.725rem;
+  line-height: 1.45;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+#formatted-markdown-renderer th {
+  background-color: #f4f8ee;
+  border: 1px solid #bacc9a;
+  padding: 0.65rem 0.85rem;
+  font-weight: 750;
+  color: #2c3d1a;
+  text-transform: uppercase;
+  font-size: 0.685rem;
+  letter-spacing: 0.025em;
+  text-align: left;
+}
+
+#formatted-markdown-renderer td {
+  border: 1px solid #c9dcb3;
+  padding: 0.55rem 0.85rem;
+  color: #334155;
+  vertical-align: top;
+}
+
+/* Make even rows slightly accented */
+#formatted-markdown-renderer tr:nth-child(even) {
+  background-color: #fafdf7;
+}
+
+/* Custom Blockquote */
+#formatted-markdown-renderer blockquote {
+  border-left: 4px solid #556b2f;
+  background-color: #fcfdfa;
+  padding: 0.85rem 1.1rem;
+  font-style: italic;
+  color: #475569;
+  font-size: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-top: 1px solid #f1f5eb;
+  border-right: 1px solid #f1f5eb;
+  border-bottom: 1px solid #f1f5eb;
+}
+
+#formatted-markdown-renderer strong {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Polished styling for Tabel Refleksi Guru matching the user photo */
+#formatted-markdown-renderer .refleksi-guru-table-styled {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 2px solid #4a5568 !important; /* Dark solid slate margin */
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled th {
+  background-color: #d1e2f3 !important; /* Gorgeous professional pastel sky blue */
+  color: #1e293b !important;
+  font-weight: 750 !important;
+  border-right: 1.5px solid #4a5568 !important;
+  border-bottom: 2px solid #4a5568 !important;
+  padding: 0.8rem 0.6rem !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  letter-spacing: 0.025em !important;
+  font-size: 11px !important;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled th:last-child {
+  border-right: none !important;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled td {
+  border-right: 1px solid #4a5568 !important;
+  border-bottom: 1px solid #4a5568 !important;
+  padding: 0.7rem 0.9rem !important;
+  color: #0f172a !important;
+  vertical-align: middle !important;
+  background-color: #ffffff !important;
+  transition: background-color 0.15s ease !important;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled td:last-child {
+  border-right: none !important;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Alternating rows for beautiful simple table contrast */
+#formatted-markdown-renderer .refleksi-guru-table-styled tr:nth-child(even) td {
+  background-color: #f7fafc !important; /* Extremely soft slate blue tint */
+}
+
+/* Align first column (No) to center */
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(1) {
+  text-align: center !important;
+  font-weight: 800 !important;
+  width: 45px !important;
+  background-color: #f1f5f9 !important; /* Accent column */
+  color: #334155 !important;
+}
+
+/* Main strategy text is left aligned, cozy line height */
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(2) {
+  text-align: left !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  color: #1e293b !important;
+}
+
+/* Checkbox empty column fields styled and centered with exquisite checkbox box */
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(3),
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(4),
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(5) {
+  text-align: center !important;
+  width: 110px !important;
+  cursor: pointer;
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled tr:hover td {
+  background-color: #f0fdf4 !important; /* Highlight entire row with an elegant soft spring green tint */
+}
+
+#formatted-markdown-renderer .refleksi-guru-table-styled tr:hover td:nth-child(1) {
+  background-color: #e2f0d9 !important; /* Beautiful green-tinted accent for the numbers on hover */
+}
+
+/* Inject beautiful physical empty checkboxes in the reflection sheet */
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(3):empty::after,
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(4):empty::after,
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(5):empty::after {
+  content: "" !important;
+  display: inline-block !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid #718096 !important;
+  border-radius: 4px !important;
+  background-color: #ffffff !important;
+  vertical-align: middle !important;
+  transition: all 0.2s ease !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Interactive fake checked-state effect when checkbox cell is hovered/clicked */
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(3):hover:empty::after,
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(4):hover:empty::after,
+#formatted-markdown-renderer .refleksi-guru-table-styled td:nth-child(5):hover:empty::after {
+  border-color: #15803d !important; /* Strong forest green */
+  background-color: #dcfce7 !important;
+  transform: scale(1.1) !important;
+}
+
+/* Polished standard tables matching moss green theme */
+#formatted-markdown-renderer .text-slate-755 {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 2px solid #8f9f74 !important; /* Premium organic border frame */
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 th {
+  background-color: #f1f6ec !important; /* Warm light green header matching nature theme */
+  color: #2c3e1a !important;
+  font-weight: 750 !important;
+  border-right: 1px solid #8f9f74 !important;
+  border-bottom: 2px solid #8f9f74 !important;
+  padding: 0.75rem 0.85rem !important;
+  text-transform: uppercase !important;
+  font-size: 10px !important;
+  letter-spacing: 0.05em !important;
+  text-align: left !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 th:last-child {
+  border-right: none !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 td {
+  border-right: 1px solid #bacc9a !important;
+  border-bottom: 1px solid #bacc9a !important;
+  padding: 0.7rem 0.9rem !important;
+  color: #334155 !important;
+  vertical-align: top !important;
+  line-height: 1.55 !important;
+  background-color: #ffffff !important;
+  transition: background-color 0.1s ease !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 td:last-child {
+  border-right: none !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 tr:last-child td {
+  border-bottom: none !important;
+}
+
+#formatted-markdown-renderer .text-slate-755 tr:nth-child(even) td {
+  background-color: #fbfdf9 !important; /* Alternating extremely subtle organic tint */
+}
+
+#formatted-markdown-renderer .text-slate-755 tr:hover td {
+  background-color: #f3f7ee !important; /* Soft row highlight on hover */
+}
+
+/* ==========================================================================
+   ACADEMIC PRINT ESTHETICS (Matching Rubrik Penilaian User Image)
+   ========================================================================== */
+
+/* Clean Academic Print Styling for Rubrik Penilaian Table */
+#formatted-markdown-renderer .rubrik-penilaian-table-styled {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-size: 12px !important;
+  color: #111111 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 2rem !important;
+  background-color: #ffffff !important;
+  border: 1px solid #111111 !important;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  overflow: visible !important;
+}
+
+#formatted-markdown-renderer .rubrik-penilaian-table-styled th {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-weight: bold !important;
+  border: 1.2px solid #111111 !important;
+  padding: 0.8rem 0.6rem !important;
+  text-transform: none !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: 13px !important;
+  letter-spacing: normal !important;
+}
+
+#formatted-markdown-renderer .rubrik-penilaian-table-styled td {
+  border: 1.2px solid #111111 !important;
+  padding: 0.8rem 1rem !important;
+  color: #111111 !important;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-size: 12px !important;
+  vertical-align: top !important;
+  line-height: 1.6 !important;
+  background-color: #ffffff !important;
+  transition: none !important;
+}
+
+/* First Column (e.g. "Tahap 1", "Tahap 2", "Aspek", "Kriteria") align to center and bold */
+#formatted-markdown-renderer .rubrik-penilaian-table-styled td:nth-child(1) {
+  text-align: center !important;
+  font-weight: bold !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  vertical-align: middle !important;
+  width: 95px !important;
+}
+
+/* Bullet list overrides within the Rubrik Penilaian table */
+#formatted-markdown-renderer .rubrik-penilaian-table-styled ul {
+  list-style-type: disc !important;
+  margin-left: 1.25rem !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0px !important;
+  padding-left: 0px !important;
+}
+
+#formatted-markdown-renderer .rubrik-penilaian-table-styled li {
+  margin-bottom: 0.4rem !important;
+  display: list-item !important;
+  list-style-position: outside !important;
+  color: #111111 !important;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+}
+
+/* Academic Document Print Layout Overrides for Asesmen output text */
+#formatted-markdown-renderer.academic-print-mode {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  color: #111111 !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode h1,
+#formatted-markdown-renderer.academic-print-mode h2,
+#formatted-markdown-renderer.academic-print-mode h3,
+#formatted-markdown-renderer.academic-print-mode h4,
+#formatted-markdown-renderer.academic-print-mode h5,
+#formatted-markdown-renderer.academic-print-mode h6 {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  color: #000000 !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode h1 {
+  border-bottom: 2px solid #111111 !important;
+  padding-bottom: 0.5rem !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode h2 {
+  font-size: 16px !important;
+  border-bottom: 1px dashed #111111 !important;
+  padding-bottom: 0.25rem !important;
+  margin-top: 1.75rem !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode h3 {
+  font-size: 14px !important;
+  margin-top: 1.5rem !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode p {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  color: #111111 !important;
+  font-size: 13.5px !important;
+  line-height: 1.7 !important;
+}
+
+#formatted-markdown-renderer.academic-print-mode li {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  color: #111111 !important;
+  font-size: 13.5px !important;
+}
+

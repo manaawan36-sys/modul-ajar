@@ -1,0 +1,6 @@
+{
+  "name": "Generator Modul Ajar Kurikulum Merdeka",
+  "description": "Asisten guru berbasis AI untuk menyusun Modul Ajar (RPP), LKPD, Rencana Asesmen, dan Bahan Ajar berstandar Kurikulum Merdeka secara otomatis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
